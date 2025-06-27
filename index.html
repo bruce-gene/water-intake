@@ -3,12 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Daily Water Intake Calculator | Scientific & Personalized</title>
-  <meta name="description" content="Enter weight and activity to calculate your daily water intake. Advanced mode adjusts for age and climate.">
-  <link rel="canonical" href="https://waterintakecalc.com/">
-  <meta property="og:title" content="Daily Water Intake Calculator – Personalized">
-  <meta property="og:description" content="Based on weight, activity, age and climate – get your personalized hydration goal.">
-  <meta property="og:image" content="https://waterintakecalc.com/banner.png">
+  <title>Daily Water Intake Calculator | WaterIntakeCalc</title>
+  <meta name="description" content="Calculate your daily water intake with animated SVG cups.">
   <style>
     body {
       font-family: sans-serif;
@@ -25,33 +21,39 @@
       border-radius: 4px;
       border: 1px solid #ccc;
     }
-    #result { font-size: 1.4rem; margin: 20px 0; }
-    #cups { display: flex; flex-wrap: wrap; justify-content: center; }
-    .cup {
-      width: 24px; height: 40px;
-      margin: 2px; background: #0af;
-      border-radius: 4px;
-      opacity: 0;
-      animation: fill 0.5s forwards;
+    #result {
+      font-size: 1.4rem;
+      margin: 20px 0;
     }
-    @keyframes fill {
-      to { opacity: 1; }
+    #cups-svg {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
     }
-    #advancedSection { display: none; }
-    .tip { font-size: 0.9rem; color: #555; }
+    .cup-svg {
+      width: 32px;
+      height: 48px;
+      margin: 4px;
+      transform: scale(0);
+      animation: popIn 0.4s forwards;
+    }
+    @keyframes popIn {
+      to { transform: scale(1); }
+    }
+    .tip {
+      font-size: 0.9rem;
+      color: #555;
+    }
   </style>
 </head>
 <body>
   <h1>Daily Water Intake Calculator</h1>
-  <p>Science‑based hydration goal tailored to you.</p>
-
   <label>Weight (kg): <input id="weight" type="number" min="30" max="200" value="70"></label>
   <label>Activity (min/day): <input id="activity" type="number" min="0" max="240" value="0"></label>
-
   <label><input id="advancedMode" type="checkbox"> Advanced Mode</label>
-  <div id="advancedSection">
+  <div id="advancedSection" style="display:none">
     <label>Age (years): <input id="age" type="number" min="5" max="100" value="30"></label>
-    <label>Climate: 
+    <label>Climate:
       <select id="climate">
         <option value="normal">Temperate</option>
         <option value="hot">Hot</option>
@@ -59,23 +61,29 @@
       </select>
     </label>
   </div>
-
   <button id="calc">Calculate</button>
-
   <div id="result"></div>
-  <div id="cups"></div>
-
-  <button id="shareBtn">Copy Result</button>
-
+  <div id="cups-svg"></div>
+  <button id="shareBtn" style="margin-top:10px;">Copy Result</button>
   <p class="tip">Pro‑Tip: carry a 1 L bottle and refill ~3 times a day.</p>
-  <p class="tip">Based on 30 mL/kg + 500 mL per 30 min exercise, adjusted for climate & age.</p>
+  <p class="tip">Based on 30 mL/kg + 500 mL per 30 min exercise, with adjustments for climate & age.</p>
 
   <script>
+    const svgIcon = `
+      <svg viewBox="0 0 24 24">
+        <path fill="#1E90FF" d="M6 2h12v17a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V2z"/>
+      </svg>`;
+
     document.getElementById('advancedMode').onchange = e => {
-      document.getElementById('advancedSection').style.display = e.target.checked ? 'block' : 'none';
+      document.getElementById('advancedSection').style.display =
+        e.target.checked ? 'block' : 'none';
     };
 
     document.getElementById('calc').onclick = async () => {
+      // Clear previous output
+      document.getElementById('result').innerText = '';
+      document.getElementById('cups-svg').innerHTML = '';
+
       const weight = +document.getElementById('weight').value;
       const activity = +document.getElementById('activity').value;
       const advanced = document.getElementById('advancedMode').checked;
@@ -85,39 +93,27 @@
       const res = await fetch('https://patient-term-5d68.miaobio.workers.dev/api/intake', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({weight, activity, age, climate})
+        body: JSON.stringify({ weight, activity, age, climate })
       }).then(r => r.json());
 
-      const text = `You should drink ${res.totalLiters.toFixed(2)} L/day (${res.glasses} glasses)`;
-      document.getElementById('result').innerText = text;
+      document.getElementById('result').innerText =
+        `You should drink ${res.totalLiters.toFixed(2)} L/day (${res.glasses} glasses)`;
 
-      const cups = document.getElementById('cups');
-      cups.innerHTML = '';
-      for(let i = 0; i < res.glasses; i++) {
-        const d = document.createElement('div');
-        d.className = 'cup';
-        cups.appendChild(d);
+      const cupsEl = document.getElementById('cups-svg');
+      for (let i = 0; i < res.glasses; i++) {
+        const span = document.createElement('span');
+        span.className = 'cup-svg';
+        span.style.animationDelay = `${i * 0.1}s`;
+        span.innerHTML = svgIcon;
+        cupsEl.appendChild(span);
       }
     };
 
     document.getElementById('shareBtn').onclick = () => {
       const text = document.getElementById('result').innerText;
-      navigator.clipboard.writeText(text).then(() => alert('Result copied!'));
+      navigator.clipboard.writeText(text)
+        .then(() => alert('Result copied!'));
     };
   </script>
-
-  <script type="application/ld+json">
-    {
-      "@context":"https://schema.org",
-      "@type":"FAQPage",
-      "mainEntity":[
-        {"@type":"Question","name":"What is this calculator?",
-         "acceptedAnswer":{"@type":"Answer","text":"Enter weight and activity to get your daily water goal. Advanced mode adds age & climate modifiers."}},
-        {"@type":"Question","name":"Why use weight to calculate water?",
-         "acceptedAnswer":{"@type":"Answer","text":"Base 30 mL per kg is used in many clinical guidelines (IOM, EFSA)."}}
-      ]
-    }
-  </script>
-
 </body>
 </html>
