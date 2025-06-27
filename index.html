@@ -4,46 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Daily Water Intake Calculator | WaterIntakeCalc</title>
-  <meta name="description" content="Calculate your daily water intake with animated SVG cups.">
+  <meta name="description" content="Calculate your daily water intake with animated SVG cups. Each cup ~250 mL.">
   <style>
-    body {
-      font-family: sans-serif;
-      max-width: 480px;
-      margin: auto;
-      padding: 20px;
-      text-align: center;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    #result {
-      font-size: 1.4rem;
-      margin: 20px 0;
-    }
-    #cups-svg {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .cup-svg {
-      width: 32px;
-      height: 48px;
-      margin: 4px;
-      transform: scale(0);
-      animation: popIn 0.4s forwards;
-    }
-    @keyframes popIn {
-      to { transform: scale(1); }
-    }
-    .tip {
-      font-size: 0.9rem;
-      color: #555;
-    }
+    body { font-family: sans-serif; max-width:480px; margin:auto; padding:20px; text-align:center; }
+    input, select, button { width:100%; padding:12px; margin:8px 0; font-size:1rem; border-radius:4px; border:1px solid #ccc; }
+    #result { font-size:1.4rem; margin:20px 0; }
+    #cups-svg { display:flex; justify-content:center; flex-wrap:wrap; }
+    .cup-svg { width:32px; height:48px; margin:4px; transform:scale(0); animation:popIn 0.4s forwards; }
+    @keyframes popIn { to { transform:scale(1); } }
+    .tip { font-size:0.9rem; color:#555; }
   </style>
 </head>
 <body>
@@ -62,17 +31,18 @@
     </label>
   </div>
   <button id="calc">Calculate</button>
+
   <div id="result"></div>
   <div id="cups-svg"></div>
-  <button id="shareBtn" style="margin-top:10px;">Copy Result</button>
-  <p class="tip">Pro‑Tip: carry a 1 L bottle and refill ~3 times a day.</p>
+  <p id="perCupTip" class="tip"></p>
+
+  <button id="shareBtn">Copy Result</button>
+
   <p class="tip">Based on 30 mL/kg + 500 mL per 30 min exercise, with adjustments for climate & age.</p>
 
   <script>
     const svgIcon = `
-      <svg viewBox="0 0 24 24">
-        <path fill="#1E90FF" d="M6 2h12v17a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V2z"/>
-      </svg>`;
+      <svg viewBox="0 0 24 24"><path fill="#1E90FF" d="M6 2h12v17a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V2z"/></svg>`;
 
     document.getElementById('advancedMode').onchange = e => {
       document.getElementById('advancedSection').style.display =
@@ -80,9 +50,9 @@
     };
 
     document.getElementById('calc').onclick = async () => {
-      // Clear previous output
       document.getElementById('result').innerText = '';
       document.getElementById('cups-svg').innerHTML = '';
+      document.getElementById('perCupTip').innerText = '';
 
       const weight = +document.getElementById('weight').value;
       const activity = +document.getElementById('activity').value;
@@ -99,6 +69,10 @@
       document.getElementById('result').innerText =
         `You should drink ${res.totalLiters.toFixed(2)} L/day (${res.glasses} glasses)`;
 
+      // 一杯约 250 mL 注释
+      document.getElementById('perCupTip').innerText =
+        `Each glass ≈ 250 mL`;
+
       const cupsEl = document.getElementById('cups-svg');
       for (let i = 0; i < res.glasses; i++) {
         const span = document.createElement('span');
@@ -110,9 +84,9 @@
     };
 
     document.getElementById('shareBtn').onclick = () => {
-      const text = document.getElementById('result').innerText;
-      navigator.clipboard.writeText(text)
-        .then(() => alert('Result copied!'));
+      const text = document.getElementById('result').innerText +
+                   '\nEach glass ≈ 250 mL';
+      navigator.clipboard.writeText(text).then(() => alert('Result copied!'));
     };
   </script>
 </body>
