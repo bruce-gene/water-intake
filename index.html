@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Daily Water Intake Calculator | Scientific & Personalized</title>
+  <meta name="description" content="Enter weight and activity to calculate your daily water intake. Advanced mode adjusts for age and climate.">
+  <link rel="canonical" href="https://waterintakecalc.com/">
+  <meta property="og:title" content="Daily Water Intake Calculator – Personalized">
+  <meta property="og:description" content="Based on weight, activity, age and climate – get your personalized hydration goal.">
+  <meta property="og:image" content="https://waterintakecalc.com/banner.png">
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 480px;
+      margin: auto;
+      padding: 20px;
+      text-align: center;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    #result { font-size: 1.4rem; margin: 20px 0; }
+    #cups { display: flex; flex-wrap: wrap; justify-content: center; }
+    .cup {
+      width: 24px; height: 40px;
+      margin: 2px; background: #0af;
+      border-radius: 4px;
+      opacity: 0;
+      animation: fill 0.5s forwards;
+    }
+    @keyframes fill {
+      to { opacity: 1; }
+    }
+    #advancedSection { display: none; }
+    .tip { font-size: 0.9rem; color: #555; }
+  </style>
+</head>
+<body>
+  <h1>Daily Water Intake Calculator</h1>
+  <p>Science‑based hydration goal tailored to you.</p>
+
+  <label>Weight (kg): <input id="weight" type="number" min="30" max="200" value="70"></label>
+  <label>Activity (min/day): <input id="activity" type="number" min="0" max="240" value="0"></label>
+
+  <label><input id="advancedMode" type="checkbox"> Advanced Mode</label>
+  <div id="advancedSection">
+    <label>Age (years): <input id="age" type="number" min="5" max="100" value="30"></label>
+    <label>Climate: 
+      <select id="climate">
+        <option value="normal">Temperate</option>
+        <option value="hot">Hot</option>
+        <option value="dry">Dry</option>
+      </select>
+    </label>
+  </div>
+
+  <button id="calc">Calculate</button>
+
+  <div id="result"></div>
+  <div id="cups"></div>
+
+  <button id="shareBtn">Copy Result</button>
+
+  <p class="tip">Pro‑Tip: carry a 1 L bottle and refill ~3 times a day.</p>
+  <p class="tip">Based on 30 mL/kg + 500 mL per 30 min exercise, adjusted for climate & age.</p>
+
+  <script>
+    document.getElementById('advancedMode').onchange = e => {
+      document.getElementById('advancedSection').style.display = e.target.checked ? 'block' : 'none';
+    };
+
+    document.getElementById('calc').onclick = async () => {
+      const weight = +document.getElementById('weight').value;
+      const activity = +document.getElementById('activity').value;
+      const advanced = document.getElementById('advancedMode').checked;
+      const age = advanced ? +document.getElementById('age').value : undefined;
+      const climate = advanced ? document.getElementById('climate').value : undefined;
+
+      const res = await fetch('https://patient-term-5d68.miaobio.workers.dev/api/intake', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({weight, activity, age, climate})
+      }).then(r => r.json());
+
+      const text = `You should drink ${res.totalLiters.toFixed(2)} L/day (${res.glasses} glasses)`;
+      document.getElementById('result').innerText = text;
+
+      const cups = document.getElementById('cups');
+      cups.innerHTML = '';
+      for(let i = 0; i < res.glasses; i++) {
+        const d = document.createElement('div');
+        d.className = 'cup';
+        cups.appendChild(d);
+      }
+    };
+
+    document.getElementById('shareBtn').onclick = () => {
+      const text = document.getElementById('result').innerText;
+      navigator.clipboard.writeText(text).then(() => alert('Result copied!'));
+    };
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"FAQPage",
+      "mainEntity":[
+        {"@type":"Question","name":"What is this calculator?",
+         "acceptedAnswer":{"@type":"Answer","text":"Enter weight and activity to get your daily water goal. Advanced mode adds age & climate modifiers."}},
+        {"@type":"Question","name":"Why use weight to calculate water?",
+         "acceptedAnswer":{"@type":"Answer","text":"Base 30 mL per kg is used in many clinical guidelines (IOM, EFSA)."}}
+      ]
+    }
+  </script>
+
+</body>
+</html>
