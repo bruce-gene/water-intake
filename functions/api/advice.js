@@ -1,5 +1,5 @@
 // File: functions/api/advice.js
-// FINAL VERSION with Optimized AI Prompt
+// ULTIMATE PROMPT - Forces AI to base advice on the provided calculation result.
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -9,27 +9,39 @@ export async function onRequestPost(context) {
         throw new Error("AI binding is not configured. Please add the 'AI' binding to your Pages project settings.");
     }
     const ai = env.AI;
+    
+    // We now expect the frontend to send the calculated result along with the user profile.
     const data = await request.json();
+    const { userProfile, calculationResult } = data;
 
-    // --- OPTIMIZED PROMPT ENGINEERING ---
+    if (!userProfile || !calculationResult) {
+        throw new Error("Missing user profile or calculation result in the request.");
+    }
+
+    // --- ULTIMATE PROMPT ENGINEERING ---
     const messages = [
       {
         role: 'system',
-        content: `You are a professional health and wellness advisor with deep expertise in nutrition and hydration science. Your persona is knowledgeable, trustworthy, and encouraging. 
-        **CRITICAL INSTRUCTIONS:** 
-        1. Your entire response must be in PLAIN TEXT.
-        2. DO NOT use any Markdown formatting like asterisks for bold (*), dashes for lists (-), or any other special characters.
-        3. Structure your response into 2 or 3 short, distinct paragraphs. Each paragraph should be a single block of text.
-        4. Provide actionable, personalized advice based on the user's data. Do not repeat their input numbers.
-        5. Maintain a professional yet accessible tone.`
+        content: `You are a professional health and wellness advisor.
+        **CRITICAL MISSION:** Your primary goal is to help the user achieve the SPECIFIC hydration target that has been calculated for them. All of your advice must directly support this calculated goal. Do not suggest alternative amounts or general ranges like '8 glasses'.
+        
+        **CRITICAL INSTRUCTIONS:**
+        1.  Base ALL your advice on the provided "Calculated Daily Goal".
+        2.  Translate the calculated goal into practical, actionable steps. For example, how to break it down throughout the day.
+        3.  Your entire response must be in PLAIN TEXT. DO NOT use any Markdown (no *, -, #, etc.).
+        4.  Structure the response into 2-3 short, distinct paragraphs.
+        5.  Maintain a professional, encouraging, and trustworthy tone.`
       },
       {
         role: 'user',
-        content: `Based on my profile (Age: ${data.age}, Gender: ${data.gender}, Weight: ${data.weightLbs.toFixed(0)} lbs, Activity: '${data.activityLevel}', Climate: ${data.isTropical ? 'Tropical' : 'Temperate'}), please provide me with personalized hydration advice.`
+        content: `My personalized calculation has determined my **Calculated Daily Goal is: ${calculationResult.displayText} (which is ${calculationResult.totalLiters} Liters)**.
+        My profile is: Age: ${userProfile.age}, Gender: ${userProfile.gender}, Weight: ${userProfile.weightLbs.toFixed(0)} lbs, Activity: '${userProfile.activityLevel}', Climate: ${userProfile.isTropical ? 'Tropical' : 'Temperate'}.
+        
+        Based on my specific goal of **${calculationResult.displayText}**, please give me personalized tips on how to achieve it.`
       }
     ];
 
-    const aiResponse = await ai.run('@cf/qwen/qwen1.5-14b-chat-awq', { messages });
+    const aiResponse = await ai.run('@cf/meta/llama-2-7b-chat-int8', { messages });
     
     return new Response(JSON.stringify(aiResponse), {
       headers: { 'Content-Type': 'application/json' },
