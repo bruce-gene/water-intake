@@ -1,36 +1,36 @@
 // File: functions/api/advice.js
-// FINAL CORRECTED VERSION - NO IMPORT STATEMENTS.
+// FINAL VERSION with Optimized AI Prompt
 
-/**
- * AI Advice Endpoint - Accesses AI directly from the environment binding.
- * This version is guaranteed to be compatible with all Cloudflare Pages environments.
- */
 export async function onRequestPost(context) {
-  // The 'env' object provided to Pages Functions contains all bindings, including AI.
   const { request, env } = context;
 
   try {
-    // --- CRITICAL FIX: Access AI directly from the 'env' object. ---
-    // The Ai class constructor is available on the binding itself.
-    // This is the correct way to do it without using `import`.
     if (!env.AI) {
         throw new Error("AI binding is not configured. Please add the 'AI' binding to your Pages project settings.");
     }
     const ai = env.AI;
-    
-    // Get the user's data from the incoming request.
     const data = await request.json();
 
-    // Craft a high-quality prompt for the AI model.
+    // --- OPTIMIZED PROMPT ENGINEERING ---
     const messages = [
-      { role: 'system', content: 'You are a friendly hydration coach. Provide short, actionable, personalized hydration tips. Do not repeat numbers. Speak directly to the user. Keep the response to 2-3 main points, using bullet points or short paragraphs.' },
-      { role: 'user', content: `Here is my data: I am ${data.age} years old, my gender is ${data.gender}, I weigh ${data.weightLbs.toFixed(0)} lbs, my activity level is '${data.activityLevel}', and I am ${data.isTropical ? '' : 'not '}in a tropical climate. Give me some personalized advice.`}
+      {
+        role: 'system',
+        content: `You are a professional health and wellness advisor with deep expertise in nutrition and hydration science. Your persona is knowledgeable, trustworthy, and encouraging. 
+        **CRITICAL INSTRUCTIONS:** 
+        1. Your entire response must be in PLAIN TEXT.
+        2. DO NOT use any Markdown formatting like asterisks for bold (*), dashes for lists (-), or any other special characters.
+        3. Structure your response into 2 or 3 short, distinct paragraphs. Each paragraph should be a single block of text.
+        4. Provide actionable, personalized advice based on the user's data. Do not repeat their input numbers.
+        5. Maintain a professional yet accessible tone.`
+      },
+      {
+        role: 'user',
+        content: `Based on my profile (Age: ${data.age}, Gender: ${data.gender}, Weight: ${data.weightLbs.toFixed(0)} lbs, Activity: '${data.activityLevel}', Climate: ${data.isTropical ? 'Tropical' : 'Temperate'}), please provide me with personalized hydration advice.`
+      }
     ];
 
-    // Run the AI model.
     const aiResponse = await ai.run('@cf/meta/llama-2-7b-chat-int8', { messages });
     
-    // Return the AI's response directly to the frontend.
     return new Response(JSON.stringify(aiResponse), {
       headers: { 'Content-Type': 'application/json' },
     });
