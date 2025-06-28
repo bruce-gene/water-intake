@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- SEO metadata remains unchanged and optimized -->
+  <!-- Finalized, SERP-optimized metadata with a "Calculator-First" approach -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  
   <title>Daily Water Intake Calculator - How Much Water Should You Drink?</title>
   <meta name="description" content="A simple, free water intake calculator to find your personalized daily hydration goal. Determines how much water to drink based on weight, age, gender, and activity.">
+
+  <!-- Canonical & Open Graph Tags -->
   <link rel="canonical" href="https://waterintakecalc.com/">
   <meta property="og:title" content="Daily Water Intake Calculator">
   <meta property="og:description" content="Get a science-based, personalized water intake goal in seconds with our free and easy-to-use calculator.">
@@ -21,7 +24,7 @@
   })(window,document,'script','dataLayer','GTM-WBZFFH6T');</script>
   <!-- End Google Tag Manager -->
   
-  <!-- Schema Markup remains unchanged -->
+  <!-- Schema Markup (Optimized for high-value FAQ snippets) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -46,10 +49,12 @@
   <style>
     :root { --primary-color: #0d6efd; --background-color: #f8f9fa; --text-color: #212529; --card-bg-color: #ffffff; --border-color: #dee2e6; --result-bg-color: #e7f5ff; --result-border-color: #90cfff; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 20px; line-height: 1.6; }
-    .container { max-width: 650px; width: 100%; margin: auto; }
+    html { scroll-behavior: smooth; }
+    .container { max-width: 700px; width: 100%; margin: auto; }
     .header { text-align: center; margin-bottom: 30px; }
     .logo { color: var(--primary-color); font-size: 2.5em; display: inline-block; line-height: 1; }
     h1 { font-size: 2.2em; margin: 10px 0; display: inline-block; vertical-align: middle; margin-left: 10px; }
+    h2 { scroll-margin-top: 20px; }
     .subtitle { font-size: 1.1em; color: #6c757d; margin-top: 5px; }
     .calculator-card { background: var(--card-bg-color); padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); }
     .form-section { margin-bottom: 20px; text-align: left; }
@@ -70,10 +75,17 @@
     .checkbox-label input { width: auto; margin: 0 10px 0 0; }
     .content-section { text-align: left; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); }
     .content-section h2, .content-section h3 { color: var(--text-color); }
-    .content-section p, .content-section ul { color: #495057; }
+    .content-section p, .content-section ul, .content-section ol, .content-section li { color: #495057; }
     .content-section blockquote { border-left: 4px solid var(--primary-color); padding-left: 15px; margin: 20px 0; font-style: italic; color: #555; }
-    .faq-item { margin-bottom: 20px; }
-    /* --- NEW STYLES FOR AI FEATURE --- */
+    .faq-item, .toc-card { text-align: left; background: #fff; padding: 20px 25px; border-radius: 12px; margin-top: 40px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); }
+    .toc-card h2 { margin-top: 0; font-size: 1.3em; }
+    .toc-card ol { padding-left: 20px; margin: 0; }
+    .toc-card li { margin-bottom: 8px; }
+    .toc-card a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
+    .toc-card a:hover { text-decoration: underline; }
+    .content-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .content-table th, .content-table td { border: 1px solid var(--border-color); padding: 10px 12px; text-align: left; }
+    .content-table th { background-color: #f2f2f2; font-weight: 600; }
     #ai-button { background-color: #198754; color: white; display: none; margin-top: 20px; transition: background-color 0.2s; }
     #ai-button:hover { background-color: #157347; }
     #ai-button:disabled { background-color: #6c757d; cursor: not-allowed; }
@@ -94,18 +106,15 @@
     </header>
 
     <main>
-      <!-- --- OPTIMIZED LAYOUT: Result section is now above the form --- -->
       <div id="result-section">
         <span class="result-primary"></span>
         <span class="result-secondary"></span>
         <p class="result-explanation"></p>
-        <!-- --- NEW AI ELEMENTS ADDED HERE --- -->
         <div id="ai-result"></div>
         <button id="ai-button">Get AI-Powered Hydration Tips</button>
       </div>
 
       <div class="calculator-card">
-        <!-- The form structure is the same -->
         <div class="form-section">
             <label for="age">Your Age (years)</label>
             <input id="age" type="number" min="1" max="120" value="30" required>
@@ -146,37 +155,105 @@
         <button id="calc">Calculate</button>
       </div>
 
-      <!-- The authoritative content section remains unchanged -->
-      <section class="content-section">
-        <h2>Why a Personalized Water Intake Calculation Matters</h2>
-        <p>Proper hydration is vital for energy levels, brain function, and overall health. While general advice like "drink 8 glasses a day" is common, it fails to consider the unique factors that determine your body's actual needs. This calculator provides a more precise starting point by analyzing your specific profile.</p>
-        <blockquote>
-          "Sufficient intake of water is essential for most bodily functions... Recommendations for water intake are not one-size-fits-all but must be individualized."
-          <br><em>- The National Academies of Sciences, Engineering, and Medicine</em>
-        </blockquote>
-        <h2 style="margin-top: 40px;">Frequently Asked Questions</h2>
-        <div class="faq-item">
-            <h3>How much water should you drink according to your weight?</h3>
-            <p>Weight is a primary factor. A common guideline for adults is to drink between half an ounce and one ounce of water for each pound you weigh. For example, if you weigh 150 lbs, you would need 75 to 150 oz of water daily. Our calculator uses your weight as a baseline before factoring in other elements like activity.</p>
-        </div>
-        <div class="faq-item">
-            <h3>Is 2 litres of water enough to drink each day?</h3>
-            <p>For many, 2 liters (about 68 oz or 8 glasses) is a solid baseline and meets the general recommendations. However, this may be insufficient if you exercise intensely, live in a hot climate, or have a larger body size. A personalized calculation, like the one above, will give you a more accurate target.</p>
-        </div>
-        <div class="faq-item">
-            <h3>Does coffee count as water intake?</h3>
-            <p>Yes. A common myth is that caffeinated drinks don't count, but that's not true. Research from institutions like the Mayo Clinic confirms that the water in beverages like coffee and tea contributes to your daily total. While plain water is the best hydrator, other fluids also play a role.</p>
-        </div>
+      <div class="toc-card">
+        <h2>Quick Navigation</h2>
+        <ol>
+          <li><a href="#calculating">Calculating Your Optimal Intake</a></li>
+          <li><a href="#recommendations">General Water Drinking Recommendations</a></li>
+          <li><a href="#adjustments">Adjustments for Climate, Sweating & Pregnancy</a></li>
+          <li><a href="#benefits">Benefits of Staying Optimally Hydrated</a></li>
+          <li><a href="#weight-loss">Can Drinking More Water Help with Weight Loss?</a></li>
+          <li><a href="#water-in-foods">Water Content in Common Foods</a></li>
+        </ol>
+      </div>
+
+      <section class="content-section" id="calculating">
+        <h2>Calculating Your Optimal Intake</h2>
+        <p>This calculator provides a personalized recommendation by analyzing several key variables based on the model you provided. For adults (age 14+), it establishes a baseline using weight and gender, then adds specific amounts for activity and climate. This method offers a more tailored goal than a generic "8 glasses a day" rule.</p>
+      </section>
+
+      <section class="content-section" id="recommendations">
+        <h2>General Water Drinking Recommendations</h2>
+        <p>While personalized results are best, general guidelines from health authorities like The U.S. National Academies of Sciences, Engineering, and Medicine suggest:</p>
+        <ul>
+          <li><strong>For men:</strong> About 15.5 cups (3.7 liters or 125 ounces) of fluids a day.</li>
+          <li><strong>For women:</strong> About 11.5 cups (2.7 liters or 91 ounces) of fluids a day.</li>
+        </ul>
+        <p>These recommendations cover fluids from water, other beverages, and food. About 20% of daily fluid intake usually comes from food and the rest from drinks.</p>
+      </section>
+      
+      <section class="content-section" id="adjustments">
+        <h2>Adjustments for Climate, Sweating & Pregnancy</h2>
+        <p>Your daily needs can change significantly based on your situation:</p>
+        <ul>
+            <li><strong>Climate & Exercise:</strong> Hot climates or intense exercise cause you to lose more water through sweat. Our calculator adds a fixed amount per activity level and for tropical climates to compensate for this.</li>
+            <li><strong>Pregnancy & Breastfeeding:</strong> These conditions require additional fluid intake to support the baby and milk production. It's recommended that pregnant women drink about 81 oz (2.4 liters) and breastfeeding women about 105 oz (3.1 liters) of fluids daily.</li>
+        </ul>
+      </section>
+      
+      <section class="content-section" id="benefits">
+        <h2>Benefits of Staying Optimally Hydrated</h2>
+        <p>Staying properly hydrated is one of the most important things you can do for your health. Key benefits include:</p>
+        <ul>
+          <li><strong>Maximizing Physical Performance:</strong> Dehydration can lead to reduced endurance, motivation, and increased fatigue.</li>
+          <li><strong>Supporting Brain Function:</strong> Even mild dehydration can impair energy levels, mood, and memory.</li>
+          <li><strong>Promoting Healthy Skin:</strong> Adequate water intake helps keep your skin hydrated and may reduce the appearance of wrinkles.</li>
+          <li><strong>Aiding Digestion and Preventing Constipation:</strong> Water helps break down food and keeps your digestive system running smoothly.</li>
+        </ul>
+      </section>
+
+      <section class="content-section" id="weight-loss">
+        <h2>Can Drinking More Water Help with Weight Loss?</h2>
+        <p>Yes, there is evidence to support this. Drinking more water can aid weight loss in several ways:</p>
+        <ol>
+            <li><strong>Boosting Metabolism:</strong> Studies have shown that drinking water can temporarily boost your metabolic rate, helping you burn more calories.</li>
+            <li><strong>Increasing Satiety:</strong> Drinking a glass of water before a meal can help you feel fuller, potentially leading you to eat less.</li>
+            <li><strong>Reducing Liquid Calorie Intake:</strong> Replacing sugary drinks like soda and juice with water is a simple way to cut a significant amount of calories from your diet.</li>
+        ol>
+      </section>
+
+      <section class="content-section" id="water-in-foods">
+        <h2>Water Content in Common Foods</h2>
+        <p>Remember that you don't have to get all your water from drinks. Many fruits and vegetables have a high water content and can contribute to your daily goal:</p>
+        <table class="content-table">
+          <thead>
+            <tr>
+              <th>Food Item</th>
+              <th>Approximate Water Content</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cucumber / Lettuce</td>
+              <td>96%</td>
+            </tr>
+            <tr>
+              <td>Zucchini / Celery / Tomato</td>
+              <td>95%</td>
+            </tr>
+            <tr>
+              <td>Watermelon / Strawberries</td>
+              <td>92%</td>
+            </tr>
+             <tr>
+              <td>Cantaloupe / Peach</td>
+              <td>90%</td>
+            </tr>
+            <tr>
+              <td>Orange / Pineapple</td>
+              <td>87%</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
     </main>
 
     <footer style="text-align: center; margin-top: 30px; font-size: 0.8em; color: #6c757d;">
-        <p>© 2025 waterintakecalc.com. All Rights Reserved. </p>
+        <p>© 2025 waterintakecalc.com. All Rights Reserved. | <a href="/privacy-policy" style="color: inherit;">Privacy Policy</a></p>
     </footer>
   </div>
   
-   <script>
-    // --- The final JavaScript logic with smart, age-aware validation ---
+  <script>
     let lastPayload = null;
     let lastResult = null; 
 
@@ -188,25 +265,20 @@
       const aiButton = document.getElementById('ai-button');
       const aiResultEl = document.getElementById('ai-result');
 
-      // --- NEW: SMART, AGE-AWARE VALIDATION LOGIC ---
       const ageInput = +document.getElementById('age').value;
       const weightInput = +document.getElementById('weight').value;
       const unit = document.getElementById('weightUnit').value;
 
-      // 1. Validate Age first, as it determines weight validation rules.
       if (ageInput < 1 || ageInput > 120) {
         alert(`Please enter an age between 1 and 120.`);
-        return; // Stop the function
+        return;
       }
 
-      // 2. Apply different weight validation based on age.
       if (ageInput >= 14) {
-        // For adults, we apply the stricter validation.
         const MIN_WEIGHT_LBS = 50;
         const MAX_WEIGHT_LBS = 500;
         const MIN_WEIGHT_KG = 22;
         const MAX_WEIGHT_KG = 227;
-
         if (unit === 'lbs' && (weightInput < MIN_WEIGHT_LBS || weightInput > MAX_WEIGHT_LBS)) {
           alert(`For adults, please enter a weight between ${MIN_WEIGHT_LBS} and ${MAX_WEIGHT_LBS} lbs.`);
           return;
@@ -216,12 +288,10 @@
           return;
         }
       } else {
-        // For children (< 14), weight is less critical. We use a much looser validation.
         const MIN_WEIGHT_LBS_CHILD = 10;
         const MAX_WEIGHT_LBS_CHILD = 200;
         const MIN_WEIGHT_KG_CHILD = 4;
         const MAX_WEIGHT_KG_CHILD = 90;
-        
         if (unit === 'lbs' && (weightInput < MIN_WEIGHT_LBS_CHILD || weightInput > MAX_WEIGHT_LBS_CHILD)) {
           alert(`Please enter a realistic weight for a child (between ${MIN_WEIGHT_LBS_CHILD} and ${MAX_WEIGHT_LBS_CHILD} lbs).`);
           return;
@@ -231,9 +301,7 @@
           return;
         }
       }
-      // --- END OF VALIDATION LOGIC ---
 
-      // Reset result areas
       resultPrimaryEl.innerText = 'Calculating...';
       resultSecondaryEl.innerText = '';
       resultExplanationEl.innerText = '';
@@ -283,7 +351,6 @@
       }
     };
 
-    // The AI button's logic remains the same
     document.getElementById('ai-button').onclick = async () => {
         const aiButton = document.getElementById('ai-button');
         const aiResultEl = document.getElementById('ai-result');
