@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Metadata for the new AI page -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AI-Powered Hydration Advisor</title>
-  <meta name="description" content="Get personalized hydration tips from our AI coach after calculating your daily water intake goal.">
-  <!-- We add a 'noindex' tag for now to prevent this test page from competing with your main page in Google search -->
+  <title>AI Hydration Advisor</title>
+  <!-- Prevents this experimental page from being indexed by Google -->
   <meta name="robots" content="noindex">
   
   <style>
-    /* We can reuse the same proven styles */
     :root { --primary-color: #0d6efd; --background-color: #f8f9fa; --text-color: #212529; --card-bg-color: #ffffff; --border-color: #dee2e6; --result-bg-color: #e7f5ff; --result-border-color: #90cfff; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 20px; line-height: 1.6; }
     .container { max-width: 650px; width: 100%; margin: auto; }
@@ -23,17 +20,20 @@
     label { display: block; margin-bottom: 12px; font-weight: 500; }
     input[type="number"], select { width: 100%; padding: 12px; margin-top: 6px; font-size: 1rem; border-radius: 8px; border: 1px solid var(--border-color); box-sizing: border-box; }
     .input-group { display: flex; }
+    .input-group input { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+    .input-group select { width: 85px; border-left: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; }
     button { width: 100%; background-color: var(--primary-color); color: white; padding: 15px; font-size: 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px;}
+    button:hover { background-color: #0b5ed7; }
     #result-section { padding: 0; border-radius: 12px; background-color: var(--result-bg-color); border: 1px solid var(--result-border-color); text-align: center; margin-bottom: 25px; overflow: hidden; max-height: 0; opacity: 0; transition: all 0.5s ease-in-out; }
-    #result-section.visible { padding: 20px; max-height: 1000px; /* Increased max-height for AI content */ opacity: 1; }
+    #result-section.visible { padding: 20px; max-height: 1200px; /* Increased max-height for AI content */ opacity: 1; }
     .result-primary { font-size: 2rem; font-weight: bold; color: var(--primary-color); display: block; }
     .result-secondary { font-size: 1rem; color: #0a58ca; margin-top: 8px; display: block; }
     .result-explanation { font-size: 0.9rem; color: #555; margin-top: 15px; line-height: 1.5; }
-    /* Styles for AI feature */
-    #ai-button { background-color: #198754; display: none; margin-top: 20px; }
+    #ai-button { background-color: #198754; color: white; display: none; margin-top: 20px; transition: background-color 0.2s;}
     #ai-button:hover { background-color: #157347; }
     #ai-button:disabled { background-color: #6c757d; cursor: not-allowed; }
     #ai-result { text-align: left; margin-top: 20px; padding: 15px; border-top: 2px solid #b3dfc3; color: #0f5132; line-height: 1.6; white-space: pre-wrap; display: none; }
+    .checkbox-label { display: flex; align-items: center; font-weight: normal; }
   </style>
 </head>
 <body>
@@ -54,7 +54,6 @@
       </div>
 
       <div class="calculator-card">
-        <!-- The form structure is the same -->
         <div class="form-section">
             <label for="age">Your Age (years)</label>
             <input id="age" type="number" min="1" max="120" value="30" required>
@@ -87,8 +86,8 @@
             </select>
         </div>
         <div class="form-section">
-            <label class="checkbox-label" style="font-weight: normal;">
-                <input id="isTropical" type="checkbox" style="width:auto; margin-right: 10px;"> I am in a tropical climate
+            <label class="checkbox-label">
+                <input id="isTropical" type="checkbox"> I am in a tropical climate
             </label>
         </div>
         <button id="calc">Calculate Intake</button>
@@ -102,6 +101,7 @@
   
   <script>
     let lastPayload = null;
+    let lastResult = null; // Store the last calculation result
 
     document.getElementById('calc').onclick = async () => {
       const resultSection = document.getElementById('result-section');
@@ -116,6 +116,7 @@
       resultExplanationEl.innerText = '';
       aiButton.style.display = 'none';
       aiResultEl.style.display = 'none';
+      
       resultSection.classList.add('visible');
       resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
@@ -140,14 +141,20 @@
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Calculation failed.');
         
+        lastResult = data; // Save the entire result object
+        
         resultPrimaryEl.innerText = data.displayText;
         if (data.totalOunces > 0) {
             resultSecondaryEl.innerText = `(approximately ${data.totalLiters} Liters)`;
+        } else {
+            resultSecondaryEl.innerText = '';
         }
         resultExplanationEl.innerText = data.explanationText || '';
+        
         aiButton.style.display = 'block';
         aiButton.disabled = false;
         aiResultEl.innerText = '';
+
       } catch (error) {
         resultPrimaryEl.innerText = `Error: ${error.message}`;
       }
@@ -156,17 +163,23 @@
     document.getElementById('ai-button').onclick = async () => {
         const aiButton = document.getElementById('ai-button');
         const aiResultEl = document.getElementById('ai-result');
-        if (!lastPayload) return;
+        if (!lastPayload || !lastResult) return;
 
         aiButton.disabled = true;
         aiButton.innerText = '🤖 Thinking...';
         aiResultEl.style.display = 'none';
 
         try {
+            // Send both profile and result to the AI endpoint
+            const aiPayload = {
+                userProfile: lastPayload,
+                calculationResult: lastResult
+            };
+
             const response = await fetch('/api/advice', {
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
-                body: JSON.stringify(lastPayload)
+                body: JSON.stringify(aiPayload)
             });
             const data = await response.json();
             if (!response.ok) throw new Error(data.error || 'Failed to get AI advice.');
@@ -175,7 +188,6 @@
             aiResultEl.style.display = 'block';
         } catch (error) {
             aiResultEl.innerText = `Error: ${error.message}`;
-            aiResultEl.style.display = 'block';
         } finally {
             aiButton.disabled = false;
             aiButton.innerText = 'Get AI-Powered Hydration Tips';
