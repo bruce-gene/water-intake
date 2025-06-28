@@ -31,10 +31,12 @@
     input:focus, select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25); }
     button { width: 100%; background-color: var(--primary-color); color: white; padding: 15px; font-size: 1.2rem; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; font-weight: bold; margin-top: 10px;}
     button:hover { background-color: #0b5ed7; }
-    #result-section { margin-top: 25px; padding: 20px; border-radius: 12px; background-color: var(--result-bg-color); border: 1px solid var(--result-border-color); opacity: 0; transition: opacity 0.5s; transform: scale(0.95); }
+    #result-section { margin-top: 25px; padding: 20px; border-radius: 12px; background-color: var(--result-bg-color); border: 1px solid var(--result-border-color); opacity: 0; transition: opacity 0.5s, transform 0.3s; transform: scale(0.95); }
     #result-section.visible { opacity: 1; transform: scale(1); }
     .result-primary { font-size: 2rem; font-weight: bold; color: var(--primary-color); display: block; }
     .result-secondary { font-size: 1rem; color: #0a58ca; margin-top: 8px; display: block; }
+    /* --- NEW STYLE FOR EXPLANATION --- */
+    .result-explanation { font-size: 0.9rem; color: #555; margin-top: 15px; line-height: 1.5; }
     .checkbox-label { display: flex; align-items: center; font-weight: normal; }
     .checkbox-label input { width: auto; margin: 0 10px 0 0; }
   </style>
@@ -48,6 +50,7 @@
     </header>
 
     <main class="calculator-card">
+      <!-- Form sections remain the same -->
       <div class="form-section">
         <label>Your Age (years)
           <input id="age" type="number" min="1" max="120" value="30" required>
@@ -68,7 +71,6 @@
           </select>
         </label>
       </div>
-
       <div class="form-section">
         <label>Daily Activity Level
           <select id="activityLevel">
@@ -86,9 +88,12 @@
       
       <button id="calc">Calculate</button>
 
+      <!-- Result section now includes a paragraph for the explanation -->
       <div id="result-section">
         <span class="result-primary"></span>
         <span class="result-secondary"></span>
+        <!-- --- NEW ELEMENT FOR EXPLANATION --- -->
+        <p class="result-explanation"></p>
       </div>
     </main>
   </div>
@@ -98,9 +103,12 @@
       const resultSection = document.getElementById('result-section');
       const resultPrimaryEl = resultSection.querySelector('.result-primary');
       const resultSecondaryEl = resultSection.querySelector('.result-secondary');
+      const resultExplanationEl = resultSection.querySelector('.result-explanation'); // Get the new element
       
+      // Clear all previous results
       resultPrimaryEl.innerText = 'Calculating...';
       resultSecondaryEl.innerText = '';
+      resultExplanationEl.innerText = ''; // Clear old explanation
       resultSection.classList.add('visible');
 
       let weightInput = +document.getElementById('weight').value;
@@ -124,19 +132,22 @@
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Calculation failed.');
 
-        // --- Display Rich Results ---
+        // Display all parts of the result
         resultPrimaryEl.innerText = data.displayText;
         
-        // Only show detailed secondary text if it was a calculation (not a fixed string for kids)
         if (data.totalOunces > 0) {
-            resultSecondaryEl.innerText = `appr. ${data.totalLiters} Liters /day for a ${data.inputWeightLbs.toFixed(0)} lbs (${data.inputWeightKg} kg) person.`;
+            resultSecondaryEl.innerText = `(approximately ${data.totalLiters} Liters)`;
         } else {
             resultSecondaryEl.innerText = '';
         }
 
+        // --- DISPLAY THE NEW EXPLANATION ---
+        resultExplanationEl.innerText = data.explanationText || '';
+
       } catch (error) {
         resultPrimaryEl.innerText = `Error`;
-        resultSecondaryEl.innerText = error.message;
+        resultSecondaryEl.innerText = '';
+        resultExplanationEl.innerText = error.message;
       }
     };
   </script>
