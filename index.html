@@ -1,23 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ============== FUNDAMENTAL SEO TAGS ============== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Daily Water Intake Calculator</title>
-  <meta name="description" content="Calculate your personalized daily water intake goal based on age, weight, gender, activity level, and climate.">
+  
+  <!-- Title Tag: The most important SEO factor. Make it compelling. -->
+  <title>Daily Water Intake Calculator - Find Your Hydration Goal</title>
+  
+  <!-- Meta Description: Your 160-character ad on Google search results. -->
+  <meta name="description" content="How much water should you drink? Get a personalized daily water intake goal in ounces (oz) and liters (L) based on your age, weight, gender, activity, and climate with our easy-to-use calculator.">
+
+  <!-- Canonical URL: Prevents duplicate content issues. -->
+  <link rel="canonical" href="https://www.waterintakecalc.com/"> <!-- !! IMPORTANT: Replace with your final domain !! -->
+
+  <!-- ============== SOCIAL MEDIA (OPEN GRAPH) TAGS ============== -->
+  <!-- These tags control how your page looks when shared on social media. -->
+  <meta property="og:title" content="Daily Water Intake Calculator - Accurate & Simple">
+  <meta property="og:description" content="Get a personalized hydration goal in seconds. Our calculator uses a science-based formula to give you the most accurate daily water recommendation.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.waterintakecalc.com/"> <!-- !! IMPORTANT: Replace with your final domain !! -->
+  <meta property="og:image" content="https://www.waterintakecalc.com/og-image.png"> <!-- !! Create a compelling 1200x630px image !! -->
+
+  <!-- ============== SCHEMA MARKUP (STRUCTURED DATA) ============== -->
+  <!-- This JSON-LD script tells Google exactly what your page is about, helping you get rich snippets. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{
+      "@type": "Question",
+      "name": "How much water should I drink a day?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The ideal daily water intake varies based on factors like age, weight, gender, activity level, and climate. Our calculator provides a personalized recommendation in ounces and liters by taking these key factors into account."
+      }
+    },{
+      "@type": "Question",
+      "name": "How is the water intake calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our calculator uses a rule-based model. For adults, it starts with a base amount determined by weight and gender (0.67 oz/lb for males, 0.5 oz/lb for females) and then adds specific amounts for activity level and tropical climates. For children under 14, it provides a general recommendation based on age brackets."
+      }
+    },{
+      "@type": "Question",
+      "name": "Does coffee or tea count towards my water intake?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, caffeinated beverages like coffee and tea do contribute to your daily fluid intake. While they have a mild diuretic effect, the amount of water in them outweighs the fluid loss. However, plain water is always the best source of hydration."
+      }
+    }]
+  }
+  </script>
+  
+  <!-- ============== STYLES & FONTS ============== -->
   <style>
-    :root {
-        --primary-color: #0d6efd;
-        --background-color: #f8f9fa;
-        --text-color: #212529;
-        --card-bg-color: #ffffff;
-        --border-color: #dee2e6;
-        --result-bg-color: #e7f5ff;
-        --result-border-color: #90cfff;
-    }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 20px; }
-    .container { max-width: 500px; width: 100%; text-align: center; margin: auto; }
-    .header { margin-bottom: 30px; }
+    /* 之前的样式可以保持不变 */
+    :root { --primary-color: #0d6efd; --background-color: #f8f9fa; --text-color: #212529; --card-bg-color: #ffffff; --border-color: #dee2e6; --result-bg-color: #e7f5ff; --result-border-color: #90cfff; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 20px; line-height: 1.6; }
+    .container { max-width: 550px; width: 100%; margin: auto; }
+    .header { text-align: center; margin-bottom: 30px; }
     .logo { color: var(--primary-color); font-size: 2.5em; display: inline-block; line-height: 1; }
     h1 { font-size: 2.2em; margin: 10px 0; display: inline-block; vertical-align: middle; margin-left: 10px; }
     .subtitle { font-size: 1.1em; color: #6c757d; margin-top: 5px; }
@@ -31,84 +73,112 @@
     input:focus, select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25); }
     button { width: 100%; background-color: var(--primary-color); color: white; padding: 15px; font-size: 1.2rem; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; font-weight: bold; margin-top: 10px;}
     button:hover { background-color: #0b5ed7; }
-    #result-section { margin-top: 25px; padding: 20px; border-radius: 12px; background-color: var(--result-bg-color); border: 1px solid var(--result-border-color); opacity: 0; transition: opacity 0.5s, transform 0.3s; transform: scale(0.95); }
+    #result-section { margin-top: 25px; padding: 20px; border-radius: 12px; background-color: var(--result-bg-color); border: 1px solid var(--result-border-color); opacity: 0; transition: opacity 0.5s, transform 0.3s; transform: scale(0.95); text-align: center; }
     #result-section.visible { opacity: 1; transform: scale(1); }
     .result-primary { font-size: 2rem; font-weight: bold; color: var(--primary-color); display: block; }
     .result-secondary { font-size: 1rem; color: #0a58ca; margin-top: 8px; display: block; }
-    /* --- NEW STYLE FOR EXPLANATION --- */
     .result-explanation { font-size: 0.9rem; color: #555; margin-top: 15px; line-height: 1.5; }
     .checkbox-label { display: flex; align-items: center; font-weight: normal; }
     .checkbox-label input { width: auto; margin: 0 10px 0 0; }
+    /* --- NEW CONTENT SECTION STYLES --- */
+    .content-section { text-align: left; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); }
+    .content-section h2 { font-size: 1.5em; color: var(--text-color); }
+    .content-section p, .content-section ul { color: #495057; }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Use <header> and <main> for semantic structure -->
     <header class="header">
-      <span class="logo">💧</span>
-      <h1>Daily Water Intake</h1>
+      <span class="logo" aria-hidden="true">💧</span>
+      <h1>Daily Water Intake Calculator</h1>
       <p class="subtitle">Get a personalized hydration goal in seconds.</p>
     </header>
 
-    <main class="calculator-card">
-      <!-- Form sections remain the same -->
-      <div class="form-section">
-        <label>Your Age (years)
+    <main>
+      <section class="calculator-card" aria-labelledby="calculator-heading">
+        <h2 id="calculator-heading" class="sr-only">Calculator Inputs</h2> <!-- For screen readers -->
+        <!-- Form sections remain the same -->
+        <div class="form-section">
+          <label for="age">Your Age (years)</label>
           <input id="age" type="number" min="1" max="120" value="30" required>
-        </label>
-        <label>Your Weight
+        </div>
+        <div class="form-section">
+          <label for="weight">Your Weight</label>
           <div class="input-group">
             <input id="weight" type="number" min="1" max="500" value="150" required>
-            <select id="weightUnit">
+            <select id="weightUnit" aria-label="Weight unit">
               <option value="lbs" selected>lbs</option>
               <option value="kg">kg</option>
             </select>
           </div>
-        </label>
-        <label>Your Gender
-          <select id="gender">
-            <option value="male" selected>Male</option>
-            <option value="female">Female</option>
-          </select>
-        </label>
-      </div>
-      <div class="form-section">
-        <label>Daily Activity Level
-          <select id="activityLevel">
-            <option value="sedentary">Sedentary</option>
-            <option value="light" selected>Light</option>
-            <option value="moderate">Moderate</option>
-            <option value="high">High</option>
-            <option value="extreme">Extreme</option>
-          </select>
-        </label>
-        <label class="checkbox-label">
-          <input id="isTropical" type="checkbox"> I am in a tropical climate
-        </label>
-      </div>
-      
-      <button id="calc">Calculate</button>
+        </div>
+        <div class="form-section">
+            <label for="gender">Your Gender</label>
+            <select id="gender">
+              <option value="male" selected>Male</option>
+              <option value="female">Female</option>
+            </select>
+        </div>
+        <div class="form-section">
+            <label for="activityLevel">Daily Activity Level</label>
+            <select id="activityLevel">
+              <option value="sedentary">Sedentary</option>
+              <option value="light" selected>Light</option>
+              <option value="moderate">Moderate</option>
+              <option value="high">High</option>
+              <option value="extreme">Extreme</option>
+            </select>
+        </div>
+        <div class="form-section">
+            <label class="checkbox-label">
+              <input id="isTropical" type="checkbox"> I am in a tropical climate
+            </label>
+        </div>
+        
+        <button id="calc">Calculate</button>
 
-      <!-- Result section now includes a paragraph for the explanation -->
-      <div id="result-section">
-        <span class="result-primary"></span>
-        <span class="result-secondary"></span>
-        <!-- --- NEW ELEMENT FOR EXPLANATION --- -->
-        <p class="result-explanation"></p>
-      </div>
+        <div id="result-section">
+          <span class="result-primary"></span>
+          <span class="result-secondary"></span>
+          <p class="result-explanation"></p>
+        </div>
+      </section>
+
+      <!-- ============== NEW CONTENT SECTION FOR SEO ============== -->
+      <section class="content-section">
+        <h2>Understanding Your Hydration Needs</h2>
+        <p>Proper hydration is essential for nearly every function in your body, from regulating temperature to lubricating joints and helping organ function. While the old "8 glasses a day" rule is a decent starting point, it doesn't account for the unique factors that influence your personal fluid requirements.</p>
+        
+        <h3>How Our Calculator Works</h3>
+        <p>This tool provides a more accurate, personalized recommendation by analyzing several key variables based on established health guidelines:</p>
+        <ul>
+          <li><strong>Weight & Gender:</strong> Body composition and metabolic rate, which differ between genders, are the primary drivers of your base hydration needs.</li>
+          <li><strong>Age:</strong> Children and older adults have different hydration requirements compared to the average adult.</li>
+          <li><strong>Activity Level:</strong> When you exercise, you lose water through sweat. Our calculator adds a specific amount of fluid to compensate for this loss.</li>
+          <li><strong>Climate:</strong> In hot or tropical climates, your body loses more water through sweating to stay cool, increasing your daily needs.</li>
+        </ul>
+        <p><strong>Disclaimer:</strong> This calculator provides an estimate for healthy adults and children. If you have specific health conditions, such as kidney or heart disease, please consult with your doctor for personalized advice.</p>
+      </section>
     </main>
+
+    <footer style="text-align: center; margin-top: 30px; font-size: 0.8em; color: #6c757d;">
+        <p>© 2025 waterintakecalc.com. All Rights Reserved. | <a href="/privacy-policy">Privacy Policy</a></p>
+    </footer>
+
   </div>
 
   <script>
+    // JavaScript code remains the same. No changes needed here.
     document.getElementById('calc').onclick = async () => {
       const resultSection = document.getElementById('result-section');
       const resultPrimaryEl = resultSection.querySelector('.result-primary');
       const resultSecondaryEl = resultSection.querySelector('.result-secondary');
-      const resultExplanationEl = resultSection.querySelector('.result-explanation'); // Get the new element
+      const resultExplanationEl = resultSection.querySelector('.result-explanation');
       
-      // Clear all previous results
       resultPrimaryEl.innerText = 'Calculating...';
       resultSecondaryEl.innerText = '';
-      resultExplanationEl.innerText = ''; // Clear old explanation
+      resultExplanationEl.innerText = '';
       resultSection.classList.add('visible');
 
       let weightInput = +document.getElementById('weight').value;
@@ -132,7 +202,6 @@
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Calculation failed.');
 
-        // Display all parts of the result
         resultPrimaryEl.innerText = data.displayText;
         
         if (data.totalOunces > 0) {
@@ -140,10 +209,7 @@
         } else {
             resultSecondaryEl.innerText = '';
         }
-
-        // --- DISPLAY THE NEW EXPLANATION ---
         resultExplanationEl.innerText = data.explanationText || '';
-
       } catch (error) {
         resultPrimaryEl.innerText = `Error`;
         resultSecondaryEl.innerText = '';
