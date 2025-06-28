@@ -29,7 +29,7 @@ export async function onRequestPost(context) {
       }
     ];
 
-    const aiResponse = await ai.run('@cf/meta/llama-2-7b-chat-int8', { messages });
+    const aiResponse = await ai.run('@cf/qwen/qwen1.5-14b-chat-awq', { messages });
     
     return new Response(JSON.stringify(aiResponse), {
       headers: { 'Content-Type': 'application/json' },
