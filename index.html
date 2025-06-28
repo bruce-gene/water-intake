@@ -1,55 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- All head tags remain the same, including SEO and Schema -->
+  <!-- Finalized, SERP-optimized metadata with a "Calculator-First" approach -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Daily Water Intake Calculator - Find Your Hydration Goal</title>
-  <meta name="description" content="How much water should you drink? Get a personalized daily water intake goal in ounces (oz) and liters (L) based on your age, weight, gender, activity, and climate with our easy-to-use calculator.">
   
-  <!-- Canonical URL updated to non-www version -->
-  <link rel="canonical" href="https://waterintakecalc.com/">
+  <!-- Final, Optimized Title: Puts the primary keyword first. -->
+  <title>Daily Water Intake Calculator - How Much Water Should You Drink?</title>
+  
+  <!-- Final, Optimized Meta Description: Clearly states what the tool is. -->
+  <meta name="description" content="A simple, free water intake calculator to find your personalized daily hydration goal. Determines how much water to drink based on weight, age, gender, and activity.">
 
-  <!-- Open Graph Tags updated to non-www version -->
-  <meta property="og:title" content="Daily Water Intake Calculator - Accurate & Simple">
-  <meta property="og:description" content="Get a personalized hydration goal in seconds. Our calculator uses a science-based formula to give you the most accurate daily water recommendation.">
+  <!-- Canonical & Open Graph Tags -->
+  <link rel="canonical" href="https://waterintakecalc.com/">
+  <meta property="og:title" content="Daily Water Intake Calculator">
+  <meta property="og:description" content="Get a science-based, personalized water intake goal in seconds with our free and easy-to-use calculator.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://waterintakecalc.com/">
   <meta property="og:image" content="https://waterintakecalc.com/og-image.png">
-  
+
+  <!-- Schema Markup (Optimized for high-value FAQ snippets) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [{
       "@type": "Question",
-      "name": "How much water should I drink a day?",
+      "name": "How much water should you drink according to your weight?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The ideal daily water intake varies based on factors like age, weight, gender, activity level, and climate. Our calculator provides a personalized recommendation in ounces and liters by taking these key factors into account."
+        "text": "Weight is a primary factor in determining water needs. A common starting point for adults is to drink about half an ounce to one ounce of water for each pound of body weight. For example, a 150-pound person would need between 75 to 150 ounces of water per day. Our calculator refines this estimate by also considering your age, gender, and activity level."
       }
-    },{
+    }, {
       "@type": "Question",
-      "name": "How is the water intake calculated?",
+      "name": "Is 2 litres of water enough to drink each day?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Our calculator uses a rule-based model. For adults, it starts with a base amount determined by weight and gender (0.67 oz/lb for males, 0.5 oz/lb for females) and then adds specific amounts for activity level and tropical climates. For children under 14, it provides a general recommendation based on age brackets."
+        "text": "For many people, 2 liters (about 68 ounces or 8 glasses) is a reasonable daily goal and a good starting point. However, this 'one-size-fits-all' advice may not be sufficient for individuals who are larger, more active, or live in hot climates. A personalized calculation is often more accurate."
       }
-    },{
+    }, {
       "@type": "Question",
-      "name": "Does coffee or tea count towards my water intake?",
+      "name": "Does coffee count as water intake?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, caffeinated beverages like coffee and tea do contribute to your daily fluid intake. While they have a mild diuretic effect, the amount of water in them outweighs the fluid loss. However, plain water is always the best source of hydration."
+        "text": "Yes, contrary to old beliefs, beverages like coffee and tea do contribute to your daily fluid intake. According to the Mayo Clinic, while caffeine has a mild diuretic effect, the water in these drinks more than makes up for the fluid loss. However, water remains the best choice for pure, calorie-free hydration."
       }
     }]
   }
   </script>
   
+  <!-- Styles -->
   <style>
     :root { --primary-color: #0d6efd; --background-color: #f8f9fa; --text-color: #212529; --card-bg-color: #ffffff; --border-color: #dee2e6; --result-bg-color: #e7f5ff; --result-border-color: #90cfff; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 20px; line-height: 1.6; }
-    .container { max-width: 550px; width: 100%; margin: auto; }
+    .container { max-width: 650px; width: 100%; margin: auto; }
     .header { text-align: center; margin-bottom: 30px; }
     .logo { color: var(--primary-color); font-size: 2.5em; display: inline-block; line-height: 1; }
     h1 { font-size: 2.2em; margin: 10px 0; display: inline-block; vertical-align: middle; margin-left: 10px; }
@@ -72,8 +76,10 @@
     .checkbox-label { display: flex; align-items: center; font-weight: normal; }
     .checkbox-label input { width: auto; margin: 0 10px 0 0; }
     .content-section { text-align: left; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); }
-    .content-section h2 { font-size: 1.5em; color: var(--text-color); }
+    .content-section h2, .content-section h3 { color: var(--text-color); }
     .content-section p, .content-section ul { color: #495057; }
+    .content-section blockquote { border-left: 4px solid var(--primary-color); padding-left: 15px; margin: 20px 0; font-style: italic; color: #555; }
+    .faq-item { margin-bottom: 20px; }
   </style>
 </head>
 <body>
@@ -133,29 +139,35 @@
       </div>
 
       <section class="content-section">
-        <h2>Understanding Your Hydration Needs</h2>
-        <p>Proper hydration is essential for nearly every function in your body, from regulating temperature to lubricating joints and helping organ function. While the old "8 glasses a day" rule is a decent starting point, it doesn't account for the unique factors that influence your personal fluid requirements.</p>
-        <h3>How Our Calculator Works</h3>
-        <p>This tool provides a more accurate, personalized recommendation by analyzing several key variables based on established health guidelines:</p>
-        <ul>
-          <li><strong>Weight & Gender:</strong> Body composition and metabolic rate, which differ between genders, are the primary drivers of your base hydration needs.</li>
-          <li><strong>Age:</strong> Children and older adults have different hydration requirements compared to the average adult.</li>
-          <li><strong>Activity Level:</strong> When you exercise, you lose water through sweat. Our calculator adds a specific amount of fluid to compensate for this loss.</li>
-          <li><strong>Climate:</strong> In hot or tropical climates, your body loses more water through sweating to stay cool, increasing your daily needs.</li>
-        </ul>
-        <p><strong>Disclaimer:</strong> This calculator provides an estimate for healthy adults and children. If you have specific health conditions, such as kidney or heart disease, please consult with your doctor for personalized advice.</p>
+        <h2>Why a Personalized Calculation Matters</h2>
+        <p>Proper hydration is vital for energy levels, brain function, and overall health. While general advice like "drink 8 glasses a day" is common, it fails to consider the unique factors that determine your body's actual needs. This calculator provides a more precise starting point by analyzing your specific profile.</p>
+        <blockquote>
+          "Sufficient intake of water is essential for most bodily functions... Recommendations for water intake are not one-size-fits-all but must be individualized."
+          <br><em>- The National Academies of Sciences, Engineering, and Medicine</em>
+        </blockquote>
+        
+        <h2 style="margin-top: 40px;">Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h3>How much water should you drink according to your weight?</h3>
+            <p>Weight is a primary factor. A common guideline for adults is to drink between half an ounce and one ounce of water for each pound you weigh. For example, if you weigh 150 lbs, you would need 75 to 150 oz of water daily. Our calculator uses your weight as a baseline before factoring in other elements like activity.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Is 2 litres of water enough to drink each day?</h3>
+            <p>For many, 2 liters (about 68 oz or 8 glasses) is a solid baseline and meets the general recommendations. However, this may be insufficient if you exercise intensely, live in a hot climate, or have a larger body size. A personalized calculation, like the one above, will give you a more accurate target.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Does coffee count as water intake?</h3>
+            <p>Yes. A common myth is that caffeinated drinks don't count, but that's not true. Research from institutions like the Mayo Clinic confirms that the water in beverages like coffee and tea contributes to your daily total. While plain water is the best hydrator, other fluids also play a role.</p>
+        </div>
       </section>
     </main>
 
     <footer style="text-align: center; margin-top: 30px; font-size: 0.8em; color: #6c757d;">
-        <!-- Footer updated to non-www version -->
         <p>© 2025 waterintakecalc.com. All Rights Reserved. | <a href="/privacy-policy">Privacy Policy</a></p>
     </footer>
-
   </div>
-
+  
   <script>
-    // The JavaScript code does not need any changes.
     document.getElementById('calc').onclick = async () => {
       const resultSection = document.getElementById('result-section');
       const resultPrimaryEl = resultSection.querySelector('.result-primary');
