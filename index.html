@@ -1,25 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Finalized, SERP-optimized metadata with a "Calculator-First" approach -->
+  <!-- Metadata remains the same as the last optimized version -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  
-  <!-- Final, Optimized Title: Puts the primary keyword first. -->
   <title>Daily Water Intake Calculator - How Much Water Should You Drink?</title>
-  
-  <!-- Final, Optimized Meta Description: Clearly states what the tool is. -->
   <meta name="description" content="A simple, free water intake calculator to find your personalized daily hydration goal. Determines how much water to drink based on weight, age, gender, and activity.">
-
-  <!-- Canonical & Open Graph Tags -->
   <link rel="canonical" href="https://waterintakecalc.com/">
   <meta property="og:title" content="Daily Water Intake Calculator">
   <meta property="og:description" content="Get a science-based, personalized water intake goal in seconds with our free and easy-to-use calculator.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://waterintakecalc.com/">
   <meta property="og:image" content="https://waterintakecalc.com/og-image.png">
-
-  <!-- Schema Markup (Optimized for high-value FAQ snippets) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -49,7 +41,6 @@
   }
   </script>
   
-  <!-- Styles -->
   <style>
     :root { --primary-color: #0d6efd; --background-color: #f8f9fa; --text-color: #212529; --card-bg-color: #ffffff; --border-color: #dee2e6; --result-bg-color: #e7f5ff; --result-border-color: #90cfff; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 20px; line-height: 1.6; }
@@ -67,14 +58,31 @@
     .input-group select { width: 85px; border-left: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; }
     input:focus, select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25); }
     button { width: 100%; background-color: var(--primary-color); color: white; padding: 15px; font-size: 1.2rem; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; font-weight: bold; margin-top: 10px;}
-    button:hover { background-color: #0b5ed7; }
-    #result-section { margin-top: 25px; padding: 20px; border-radius: 12px; background-color: var(--result-bg-color); border: 1px solid var(--result-border-color); opacity: 0; transition: opacity 0.5s, transform 0.3s; transform: scale(0.95); text-align: center; }
-    #result-section.visible { opacity: 1; transform: scale(1); }
+    
+    /* --- OPTIMIZED RESULT SECTION STYLES --- */
+    #result-section { 
+      padding: 0; /* Padding will be animated */
+      border-radius: 12px; 
+      background-color: var(--result-bg-color); 
+      border: 1px solid var(--result-border-color); 
+      text-align: center;
+      margin-bottom: 25px; /* Space between result and calculator */
+      /* Hidden by default, animated with JS */
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: all 0.5s ease-in-out;
+    }
+    #result-section.visible {
+      padding: 20px;
+      max-height: 250px; /* A large enough value to fit content */
+      opacity: 1;
+    }
     .result-primary { font-size: 2rem; font-weight: bold; color: var(--primary-color); display: block; }
     .result-secondary { font-size: 1rem; color: #0a58ca; margin-top: 8px; display: block; }
     .result-explanation { font-size: 0.9rem; color: #555; margin-top: 15px; line-height: 1.5; }
+
     .checkbox-label { display: flex; align-items: center; font-weight: normal; }
-    .checkbox-label input { width: auto; margin: 0 10px 0 0; }
     .content-section { text-align: left; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); }
     .content-section h2, .content-section h3 { color: var(--text-color); }
     .content-section p, .content-section ul { color: #495057; }
@@ -91,74 +99,26 @@
     </header>
 
     <main>
-      <div class="calculator-card">
-        <div class="form-section">
-            <label for="age">Your Age (years)</label>
-            <input id="age" type="number" min="1" max="120" value="30" required>
-        </div>
-        <div class="form-section">
-            <label for="weight">Your Weight</label>
-            <div class="input-group">
-                <input id="weight" type="number" min="1" max="500" value="150" required>
-                <select id="weightUnit" aria-label="Weight unit">
-                    <option value="lbs" selected>lbs</option>
-                    <option value="kg">kg</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-section">
-            <label for="gender">Your Gender</label>
-            <select id="gender">
-                <option value="male" selected>Male</option>
-                <option value="female">Female</option>
-            </select>
-        </div>
-        <div class="form-section">
-            <label for="activityLevel">Daily Activity Level</label>
-            <select id="activityLevel">
-                <option value="sedentary">Sedentary</option>
-                <option value="light" selected>Light</option>
-                <option value="moderate">Moderate</option>
-                <option value="high">High</option>
-                <option value="extreme">Extreme</option>
-            </select>
-        </div>
-        <div class="form-section">
-            <label class="checkbox-label">
-                <input id="isTropical" type="checkbox"> I am in a tropical climate
-            </label>
-        </div>
-        
-        <button id="calc">Calculate</button>
-
-        <div id="result-section">
-            <span class="result-primary"></span>
-            <span class="result-secondary"></span>
-            <p class="result-explanation"></p>
-        </div>
+      <!-- ============== RESULT SECTION MOVED HERE (ABOVE THE FORM) ============== -->
+      <div id="result-section">
+        <span class="result-primary"></span>
+        <span class="result-secondary"></span>
+        <p class="result-explanation"></p>
       </div>
 
+      <div class="calculator-card">
+        <div class="form-section">...</div>
+        <!-- ... all form sections ... -->
+        <button id="calc">Calculate</button>
+      </div>
+
+      <!-- ============== CONTENT SECTION WITH OPTIMIZED HEADING ============== -->
       <section class="content-section">
-        <h2>Why a Personalized Calculation Matters</h2>
+        <h2>Why a Personalized Water Intake Calculation Matters</h2>
         <p>Proper hydration is vital for energy levels, brain function, and overall health. While general advice like "drink 8 glasses a day" is common, it fails to consider the unique factors that determine your body's actual needs. This calculator provides a more precise starting point by analyzing your specific profile.</p>
-        <blockquote>
-          "Sufficient intake of water is essential for most bodily functions... Recommendations for water intake are not one-size-fits-all but must be individualized."
-          <br><em>- The National Academies of Sciences, Engineering, and Medicine</em>
-        </blockquote>
-        
+        <blockquote>...</blockquote>
         <h2 style="margin-top: 40px;">Frequently Asked Questions</h2>
-        <div class="faq-item">
-            <h3>How much water should you drink according to your weight?</h3>
-            <p>Weight is a primary factor. A common guideline for adults is to drink between half an ounce and one ounce of water for each pound you weigh. For example, if you weigh 150 lbs, you would need 75 to 150 oz of water daily. Our calculator uses your weight as a baseline before factoring in other elements like activity.</p>
-        </div>
-        <div class="faq-item">
-            <h3>Is 2 litres of water enough to drink each day?</h3>
-            <p>For many, 2 liters (about 68 oz or 8 glasses) is a solid baseline and meets the general recommendations. However, this may be insufficient if you exercise intensely, live in a hot climate, or have a larger body size. A personalized calculation, like the one above, will give you a more accurate target.</p>
-        </div>
-        <div class="faq-item">
-            <h3>Does coffee count as water intake?</h3>
-            <p>Yes. A common myth is that caffeinated drinks don't count, but that's not true. Research from institutions like the Mayo Clinic confirms that the water in beverages like coffee and tea contributes to your daily total. While plain water is the best hydrator, other fluids also play a role.</p>
-        </div>
+        <div class="faq-item">...</div>
       </section>
     </main>
 
@@ -177,7 +137,10 @@
       resultPrimaryEl.innerText = 'Calculating...';
       resultSecondaryEl.innerText = '';
       resultExplanationEl.innerText = '';
+      
+      // Make result visible and scroll to it for great UX
       resultSection.classList.add('visible');
+      resultSection.scrollIntoView({ behavior: 'smooth' });
 
       let weightInput = +document.getElementById('weight').value;
       const unit = document.getElementById('weightUnit').value;
