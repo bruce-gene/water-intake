@@ -175,8 +175,8 @@
     </footer>
   </div>
   
-  <script>
-    // --- The new, combined JavaScript logic ---
+   <script>
+    // --- The final JavaScript logic with smart, age-aware validation ---
     let lastPayload = null;
     let lastResult = null; 
 
@@ -188,7 +188,52 @@
       const aiButton = document.getElementById('ai-button');
       const aiResultEl = document.getElementById('ai-result');
 
-      // Reset all result areas on new calculation
+      // --- NEW: SMART, AGE-AWARE VALIDATION LOGIC ---
+      const ageInput = +document.getElementById('age').value;
+      const weightInput = +document.getElementById('weight').value;
+      const unit = document.getElementById('weightUnit').value;
+
+      // 1. Validate Age first, as it determines weight validation rules.
+      if (ageInput < 1 || ageInput > 120) {
+        alert(`Please enter an age between 1 and 120.`);
+        return; // Stop the function
+      }
+
+      // 2. Apply different weight validation based on age.
+      if (ageInput >= 14) {
+        // For adults, we apply the stricter validation.
+        const MIN_WEIGHT_LBS = 50;
+        const MAX_WEIGHT_LBS = 500;
+        const MIN_WEIGHT_KG = 22;
+        const MAX_WEIGHT_KG = 227;
+
+        if (unit === 'lbs' && (weightInput < MIN_WEIGHT_LBS || weightInput > MAX_WEIGHT_LBS)) {
+          alert(`For adults, please enter a weight between ${MIN_WEIGHT_LBS} and ${MAX_WEIGHT_LBS} lbs.`);
+          return;
+        }
+        if (unit === 'kg' && (weightInput < MIN_WEIGHT_KG || weightInput > MAX_WEIGHT_KG)) {
+          alert(`For adults, please enter a weight between ${MIN_WEIGHT_KG} and ${MAX_WEIGHT_KG} kg.`);
+          return;
+        }
+      } else {
+        // For children (< 14), weight is less critical. We use a much looser validation.
+        const MIN_WEIGHT_LBS_CHILD = 10;
+        const MAX_WEIGHT_LBS_CHILD = 200;
+        const MIN_WEIGHT_KG_CHILD = 4;
+        const MAX_WEIGHT_KG_CHILD = 90;
+        
+        if (unit === 'lbs' && (weightInput < MIN_WEIGHT_LBS_CHILD || weightInput > MAX_WEIGHT_LBS_CHILD)) {
+          alert(`Please enter a realistic weight for a child (between ${MIN_WEIGHT_LBS_CHILD} and ${MAX_WEIGHT_LBS_CHILD} lbs).`);
+          return;
+        }
+        if (unit === 'kg' && (weightInput < MIN_WEIGHT_KG_CHILD || weightInput > MAX_WEIGHT_KG_CHILD)) {
+          alert(`Please enter a realistic weight for a child (between ${MIN_WEIGHT_KG_CHILD} and ${MAX_WEIGHT_KG_CHILD} kg).`);
+          return;
+        }
+      }
+      // --- END OF VALIDATION LOGIC ---
+
+      // Reset result areas
       resultPrimaryEl.innerText = 'Calculating...';
       resultSecondaryEl.innerText = '';
       resultExplanationEl.innerText = '';
@@ -198,12 +243,10 @@
       resultSection.classList.add('visible');
       resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-      let weightInput = +document.getElementById('weight').value;
-      const unit = document.getElementById('weightUnit').value;
       const weightLbs = (unit === 'kg') ? weightInput * 2.20462 : weightInput;
 
       lastPayload = {
-        age: +document.getElementById('age').value,
+        age: ageInput,
         weightLbs: weightLbs,
         gender: document.getElementById('gender').value,
         activityLevel: document.getElementById('activityLevel').value,
@@ -229,7 +272,6 @@
         }
         resultExplanationEl.innerText = data.explanationText || '';
         
-        // Show the AI button after a successful calculation
         aiButton.style.display = 'block';
         aiButton.disabled = false;
         aiResultEl.innerText = '';
@@ -241,7 +283,7 @@
       }
     };
 
-    // --- Add the AI button's logic ---
+    // The AI button's logic remains the same
     document.getElementById('ai-button').onclick = async () => {
         const aiButton = document.getElementById('ai-button');
         const aiResultEl = document.getElementById('ai-result');
@@ -270,7 +312,6 @@
             aiResultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         } catch (error) {
             aiResultEl.innerText = `Error: ${error.message}`;
-            aiResultEl.style.display = 'block';
         } finally {
             aiButton.disabled = false;
             aiButton.innerText = 'Get AI-Powered Hydration Tips';
