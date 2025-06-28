@@ -1,93 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Daily Water Intake Calculator | WaterIntakeCalc</title>
-  <meta name="description" content="Calculate your daily water intake with animated SVG cups. Each cup ~250 mL.">
-  <style>
-    body { font-family: sans-serif; max-width:480px; margin:auto; padding:20px; text-align:center; }
-    input, select, button { width:100%; padding:12px; margin:8px 0; font-size:1rem; border-radius:4px; border:1px solid #ccc; }
-    #result { font-size:1.4rem; margin:20px 0; }
-    #cups-svg { display:flex; justify-content:center; flex-wrap:wrap; }
-    .cup-svg { width:32px; height:48px; margin:4px; transform:scale(0); animation:popIn 0.4s forwards; }
-    @keyframes popIn { to { transform:scale(1); } }
-    .tip { font-size:0.9rem; color:#555; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Daily Water Intake Calculator | Calculate Your Hydration Needs</title>
+    <meta name="description" content="Calculate your ideal daily water intake based on your weight, age, and activity level. Get a personalized hydration goal in seconds with our free, science-based calculator.">
+    <link rel="canonical" href="https://waterintakecalc.com/"> <!-- 替换成你的最终域名 -->
+    
+    <!-- Open Graph Meta Tags (for social sharing) -->
+    <meta property="og:title" content="Daily Water Intake Calculator">
+    <meta property="og:description" content="Find out exactly how much water you should drink per day.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://waterintakecalc.com/"> <!-- 替换成你的最终域名 -->
+    <meta property="og:image" content="https://waterintakecalc.com/og-image.png"> <!-- 建议创建一个分享图片 -->
+
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --background-color: #F8F9FA;
+            --text-color: #343A40;
+            --card-bg-color: #FFFFFF;
+            --border-color: #DEE2E6;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .calculator-card {
+            background: var(--card-bg-color);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: #6c757d;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .input-wrapper {
+            display: flex;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 1em;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+        .input-wrapper select {
+            flex-shrink: 0;
+            width: 80px;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: 0;
+        }
+
+        .input-wrapper input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            position: relative;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .btn.loading span {
+            visibility: hidden;
+        }
+
+        #results {
+            background: #e7f3ff;
+            border: 1px solid #b3d7ff;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-align: center;
+        }
+
+        #results.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .result-equivalent {
+            font-size: 1.1em;
+            color: #0056b3;
+            margin-top: 5px;
+        }
+        
+        .result-tip {
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #343A40;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .explanation {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+        
+        footer {
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+        
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-  <h1>Daily Water Intake Calculator</h1>
-  <label>Weight (kg): <input id="weight" type="number" min="30" max="200" value="70"></label>
-  <label>Activity (min/day): <input id="activity" type="number" min="0" max="240" value="0"></label>
-  <label><input id="advancedMode" type="checkbox"> Advanced Mode</label>
-  <div id="advancedSection" style="display:none">
-    <label>Age (years): <input id="age" type="number" min="5" max="100" value="30"></label>
-    <label>Climate:
-      <select id="climate">
-        <option value="normal">Temperate</option>
-        <option value="hot">Hot</option>
-        <option value="dry">Dry</option>
-      </select>
-    </label>
-  </div>
-  <button id="calc">Calculate</button>
 
-  <div id="result"></div>
-  <div id="cups-svg"></div>
-  <p id="perCupTip" class="tip"></p>
+    <div class="container">
+        <header>
+            <h1>💧 Daily Water Intake</h1>
+            <p class="subtitle">Get a personalized hydration goal in seconds.</p>
+        </header>
 
-  <button id="shareBtn">Copy Result</button>
+        <main>
+            <div class="calculator-card">
+                <form id="water-form">
+                    <div class="form-group">
+                        <label for="weight">Your Body Weight</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="weight" name="weight" placeholder="e.g., 70" required>
+                            <select id="units" name="units">
+                                <option value="kg" selected>kg</option>
+                                <option value="lbs">lbs</option>
+                            </select>
+                        </div>
+                    </div>
 
-  <p class="tip">Based on 30 mL/kg + 500 mL per 30 min exercise, with adjustments for climate & age.</p>
+                    <div class="form-group">
+                        <label for="activity">Daily Exercise</label>
+                        <select id="activity" name="activity">
+                            <option value="0" selected>Little to no exercise</option>
+                            <option value="30">30 minutes</option>
+                            <option value="60">60 minutes</option>
+                            <option value="90">90+ minutes</option>
+                        </select>
+                    </div>
 
-  <script>
-    const svgIcon = `
-      <svg viewBox="0 0 24 24"><path fill="#1E90FF" d="M6 2h12v17a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V2z"/></svg>`;
+                    <button type="submit" id="calculate-btn" class="btn">
+                        <span>Calculate</span>
+                    </button>
+                </form>
 
-    document.getElementById('advancedMode').onchange = e => {
-      document.getElementById('advancedSection').style.display =
-        e.target.checked ? 'block' : 'none';
-    };
+                <section id="results">
+                    <span class="result-value"><span id="liters-result"></span> Liters</span>
+                    <p class="result-equivalent">
+                        or <span id="ounces-result"></span> oz / <span id="glasses-result"></span> glasses
+                    </p>
+                    <p class="result-tip">💡 <strong>Pro Tip:</strong> <span id="tip-result"></span></p>
+                </section>
+            </div>
+            
+            <section class="explanation">
+                <p>Our calculator provides an estimate based on common formulas, factoring in your weight and activity level. Individual needs can vary based on health, climate, and other factors. Always listen to your body.</p>
+            </section>
+        </main>
+        
+        <footer>
+            <p>© 2024 <a href="https://waterintakecalc.com/">waterintakecalc.com</a>. All Rights Reserved.</p>
+        </footer>
+    </div>
 
-    document.getElementById('calc').onclick = async () => {
-      document.getElementById('result').innerText = '';
-      document.getElementById('cups-svg').innerHTML = '';
-      document.getElementById('perCupTip').innerText = '';
+    <script>
+        const form = document.getElementById('water-form');
+        const resultsSection = document.getElementById('results');
+        const calculateBtn = document.getElementById('calculate-btn');
 
-      const weight = +document.getElementById('weight').value;
-      const activity = +document.getElementById('activity').value;
-      const advanced = document.getElementById('advancedMode').checked;
-      const age = advanced ? +document.getElementById('age').value : undefined;
-      const climate = advanced ? document.getElementById('climate').value : undefined;
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-      const res = await fetch('/api/intake', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ weight, activity, age, climate })
-      }).then(r => r.json());
+            // 1. Show loading state
+            calculateBtn.classList.add('loading');
+            resultsSection.classList.remove('visible');
 
-      document.getElementById('result').innerText =
-        `You should drink ${res.totalLiters.toFixed(2)} L/day (${res.glasses} glasses)`;
+            // 2. Get form data
+            const formData = new FormData(form);
+            const weight = parseFloat(formData.get('weight'));
+            const units = formData.get('units');
+            const activity = parseInt(formData.get('activity'));
 
-      // 一杯约 250 mL 注释
-      document.getElementById('perCupTip').innerText =
-        `Each glass ≈ 250 mL`;
+            if (isNaN(weight) || weight <= 0) {
+                alert('Please enter a valid weight.');
+                calculateBtn.classList.remove('loading');
+                return;
+            }
 
-      const cupsEl = document.getElementById('cups-svg');
-      for (let i = 0; i < res.glasses; i++) {
-        const span = document.createElement('span');
-        span.className = 'cup-svg';
-        span.style.animationDelay = `${i * 0.1}s`;
-        span.innerHTML = svgIcon;
-        cupsEl.appendChild(span);
-      }
-    };
+            // 3. Prepare data for the API
+            const payload = {
+                weight: weight,
+                units: units,
+                activity: activity
+            };
 
-    document.getElementById('shareBtn').onclick = () => {
-      const text = document.getElementById('result').innerText +
-                   '\nEach glass ≈ 250 mL';
-      navigator.clipboard.writeText(text).then(() => alert('Result copied!'));
-    };
-  </script>
+            try {
+                // 4. Call the Cloudflare Worker API
+                //    The '/api/calculate' endpoint will be automatically routed to your Worker by Cloudflare Pages.
+                const response = await fetch('/api/calculate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+
+                // 5. Display the results
+                document.getElementById('liters-result').textContent = data.liters;
+                document.getElementById('ounces-result').textContent = data.ounces;
+                document.getElementById('glasses-result').textContent = data.glasses;
+                document.getElementById('tip-result').textContent = data.tip;
+                
+                resultsSection.classList.add('visible');
+                
+                // Scroll to results for better UX on mobile
+                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            } catch (error) {
+                console.error('Calculation failed:', error);
+                alert('Oops! Something went wrong. Please try again.');
+            } finally {
+                // 6. Remove loading state
+                calculateBtn.classList.remove('loading');
+            }
+        });
+    </script>
 </body>
 </html>
