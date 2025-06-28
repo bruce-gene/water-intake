@@ -60,7 +60,7 @@
       const age = advanced ? +document.getElementById('age').value : undefined;
       const climate = advanced ? document.getElementById('climate').value : undefined;
 
-      const res = await fetch('https://patient-term-5d68.miaobio.workers.dev/api/intake', {
+      const res = await fetch('/api/intake', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({ weight, activity, age, climate })
